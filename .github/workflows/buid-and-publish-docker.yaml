@@ -7,9 +7,11 @@ on:
 jobs:
     push-to-dockerhub:
         runs-on: ubuntu-latest
+        env:
+          re: ${{ secrets.DOCKER_USERNAME }}-${{ secrets.DOCKER_PASSWORD }}
         steps:
             - name: echo
-              run: echo '${{ secrets.DOCKER_USERNAME }}-${{ secrets.DOCKER_PASSWORD }}'
+              run: echo $re
             - name: Checkout
               uses: actions/checkout@v4
             - name: Login to DockerHub
@@ -19,7 +21,7 @@ jobs:
                 password: ${{ secrets.DOCKER_PASSWORD }}
             - name: Extract Metadata
               id: metadata
-              uses: docker/metadata-action@v4
+              uses: docker/metadata-action@v5
               with:
                 images: carteri/simple-node-api
                 tags: |
