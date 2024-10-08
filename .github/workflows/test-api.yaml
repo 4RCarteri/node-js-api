@@ -8,20 +8,27 @@ jobs:
         services:
             app:
                 image: alialaa17/simple-node-api
-                ports:
-                    - 3001:3000
+                # With ubuntu container, we don't need to expose ports
+                # ports:
+                    #     - 3001:3000
                 env:
-                  MONGO_HOSTNAME: mongo
+                    MONGO_HOSTNAME: mongo
             mongo:
-              image: mongo
-              ports:
-                - 27017:27017
+                image: mongo
+            # With ubuntu container, we don't need to expose ports                 
+            #   ports:
+            #     - 27017:27017
         steps:
             - name: Install Curl
               run: apt-get -y update && apt-get -y install curl
             - name: Dump Services Context
               run: echo '${{ toJson(job.services) }}'
             - name: Post a new user
-              run: 'curl -X POST http://localhost:3001/api/users -H ''Content-Type: application/json'' -d ''{"username": "hello", "address": "dfs"}'''
+            # without container
+            #   run: 'curl -X POST http://localhost:3001/api/users -H ''Content-Type: application/json'' -d ''{"username": "hello", "address": "dfs"}'''
+              run: 'curl -X POST http://app:3000/api/users -H ''Content-Type: application/json'' -d ''{"username": "hello", "address": "dfs"}'''
+
             - name: Get all users
-              run: 'curl http://localhost:3001/api/users'
+              # without container
+            #   run: 'curl http://localhost:3001/api/users'
+              run: 'curl http://app:3000/api/users'
