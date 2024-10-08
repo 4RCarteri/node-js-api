@@ -7,6 +7,8 @@ jobs:
     push-to-dockerhub:
         runs-on: ubuntu-latest
         steps:
+            - name: echo
+              run: echo '${{ secrets.DOCKER_USERNAME }}-${{ secrets.DOCKER_PASSWORD }}'
             - name: Checkout
               uses: actions/checkout@v4
             - name: Login to DockerHub
